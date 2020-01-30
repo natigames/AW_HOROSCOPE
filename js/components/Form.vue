@@ -1,9 +1,14 @@
 <template>
 	<div>
+		<h2>Personal Horoscope</h2>
 		<form class="text-left" @submit.prevent="getReport">
 			<div class="form-group row align-items-end">
 				<label for="firstname" class="col-sm-4">First name:</label>
 				<input type="text" name="firstname" class="col-sm-8" v-model="firstname">
+			</div>
+			<div class="form-group row align-items-end">
+				<label for="email" class="col-sm-4">Email:</label>
+				<input type="email" name="email" class="col-sm-8" v-model="email">
 			</div>
 			<DateTimePicker name="birthdate" v-model="birthDatetime"></DateTimePicker>
 			<div class="form-group row align-items-end">
@@ -25,6 +30,7 @@ export default {
 		return {
 			autocomplete: null,
 			firstname: "",
+			email: "",
 			birthDatetime: "",
 			birthPlace: "",
 		};
@@ -45,18 +51,33 @@ export default {
 				});
 				let self = this;
 				this.autocomplete.addListener('place_changed', () => {
-					//console.log(self.autocomplete.getPlace());
-					let city = self.autocomplete.getPlace().formatted_address;
-					console.log(city);
-					self.birthPlace = city;
+					self.birthPlace = self.autocomplete.getPlace().formatted_address;
 				});
 			} else {
 				let self = this;
-				window.setTimeout(function(){self.bindGooglePlaces();}, 100);
+				window.setTimeout(() => {self.bindGooglePlaces();}, 100);
 			}
 		},
 		getReport: function() {
+			//create and store user as a cookie
+			let user = JSON.stringify({
+				firstname: this.firstname,
+				email: this.email,
+				birthdate: this.birthDatetime,
+				placename: this.birthPlace,
+			});
 
+			let d = new Date();
+			d.setTime(d.getTime() + (180 * 24 * 60 * 60 * 1000));
+			let expires = "expires=" + d.toUTCString();
+
+			document.cookie = "astroweb-horoscope-user=" + user + ";" + expires + ";";
+
+			//set user on parent component
+			this.$parent.user = JSON.parse(user);
+
+			//change to Report view
+			this.$parent.changePage("Report");
 		},
 	},
 }

@@ -1,6 +1,5 @@
 <template>
 	<div :id="'astroweb-horoscope_' + uid" class="astroweb-horoscope-container">
-		<h3 class="mb-4">Personal Horoscope</h3>
 		<component :is="currentPage" v-on:change-page="changePage" v-bind="props" ref="currentPage"></component>
 	</div>
 </template>
@@ -13,7 +12,7 @@ export default {
 	data: function() {
 		return {
 			uid: 0,
-			user: "",
+			user: null,
 			currentPage: null,
 		};
 	},
@@ -23,7 +22,10 @@ export default {
 	},
 	methods: {
 		init: function() {
-			this.user = this.getUserCookie();
+			if(this.getUserCookie()) {
+				this.user = JSON.parse(this.getUserCookie());
+			}
+
 			if(this.user) {
 				this.changePage("Report");
 			} else {
@@ -65,6 +67,7 @@ export default {
 
 <style lang="scss" scoped>
 .astroweb-horoscope-container {
+	color: #444;
 	background-color: #999;
 	padding: 1em 3em;
 }
