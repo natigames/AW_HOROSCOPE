@@ -1,5 +1,5 @@
 <template>
-	<div :id="'astroweb-horoscope_' + uid" class="astroweb-horoscope-container">
+	<div v-if="!loading" :id="'astroweb-horoscope_' + uid" class="astroweb-horoscope-container">
 		<component :is="currentPage" v-on:change-page="changePage" v-bind="props" ref="currentPage"></component>
 	</div>
 </template>
@@ -14,13 +14,59 @@ export default {
 			uid: 0,
 			user: null,
 			currentPage: null,
+			loading: true,
 		};
+	},
+	props: {
+		colorscheme: String,
+		stylesheet: String,
 	},
 	mounted() {
 		this.uid = this.$parent.createUID();
+
+		//load color scheme
+		if(this.colorscheme) {
+			$.get(this.colorscheme, function(data, status){
+				$("head").append(this.scopeCSS(data));
+				if(!this.stylesheet) {
+					this.loading = false;
+				} else {
+					//nested so they load in the correct order since these are async calls
+					$.get(this.stylesheet, function(data, status){
+						$("head").append(this.scopeCSS(data));
+						this.loading = false;
+					}.bind(this));
+				}
+			}.bind(this));
+
+		}
+		//load custom stylesheet
+		if(this.stylesheet && !this.colorscheme) {
+			$.get(this.stylesheet, function(data, status){
+				$("head").append(this.scopeCSS(data));
+				this.loading = false;
+			}.bind(this));
+		}
+
+		if(!this.stylesheet && !this.colorscheme) {
+			this.loading = false;
+		}
+		
 		this.init();
 	},
 	methods: {
+		scopeCSS(data) {
+			let componentSelector = "#astroweb-horoscope_" + this.uid;
+
+			data = data.replace(":root", "");
+
+			data = data.replace(/^.*[{|,]$/gm, componentSelector + ' $&');
+
+			//adjust top level element relationship
+			data = data.replace(componentSelector + " .astroweb-horoscope-container", componentSelector + ".astroweb-horoscope-container");
+				
+			return "<style>" + data + "</style>";
+		},
 		init: function() {
 			if(this.getUserCookie()) {
 				this.user = JSON.parse(this.getUserCookie());

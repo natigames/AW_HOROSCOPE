@@ -1,11 +1,11 @@
 <template>
 	<div class="datetime-picker d-flex p-0 m-0 col-sm-12 row">
 		<div class="form-group row mx-auto w-100 mb-0 align-items-end">
-			<label :for="name" class="col-12 pl-0">Date of birth:</label>
+			<label :for="name" class="col-12 pl-0">{{ label_dob }}:</label>
 			<input type="hidden" :name="name" v-model="ghostInputValue">
 		</div>
 		<div class="col-12 row mx-auto p-0 w-100 mb-4 justify-content-between">
-			<label for="hour1" class="col-12 pl-0">Time of birth:</label>
+			<label for="hour1" class="col-12 pl-0">{{ label_tob }}:</label>
 			<select v-model="hour" name="hour1" class="hour form-control col-4 col-sm-3" required @change="$emit('input', val)" @invalid="$parent.invalidMsg($event)">
 				<option v-for="currHour in hours" :value="currHour">{{ getFriendlyHour(currHour) }}</option>
 			</select>
@@ -31,9 +31,11 @@ export default {
 			day: '',
 			hour: '',
 			minute: '',
-			minLabel: ASTROWEB_HOROSCOPE_CONFIG.translate("label_date_minute"),
 			ghostInputValue: '',
 			ghostInputSelector: '',
+			label_dob: ASTROWEB_HOROSCOPE_CONFIG.translate('label_dob'),
+			label_tob: ASTROWEB_HOROSCOPE_CONFIG.translate('label_tob'),
+			minLabel: ASTROWEB_HOROSCOPE_CONFIG.translate("label_date_minute"),
 		};
 	},
 	props: {

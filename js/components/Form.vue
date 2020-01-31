@@ -1,22 +1,22 @@
 <template>
 	<div>
-		<h2>Personal Horoscope</h2>
+		<h2 class="form-header">{{ form_title }}</h2>
 		<form class="text-left" @submit.prevent="getReport">
 			<div class="form-group row align-items-end">
-				<label for="firstname" class="col-sm-4">First name:</label>
-				<input type="text" name="firstname" class="col-sm-8" v-model="firstname">
+				<label for="firstname" class="col-sm-4">{{ label_first_name }}:</label>
+				<input type="text" name="firstname" class="col-sm-8" v-model="firstname" :placeholder="placeholder_input_first_name">
 			</div>
 			<div class="form-group row align-items-end">
-				<label for="email" class="col-sm-4">Email:</label>
-				<input type="email" name="email" class="col-sm-8" v-model="email">
+				<label for="email" class="col-sm-4">{{ label_email }}:</label>
+				<input type="email" name="email" class="col-sm-8" v-model="email" :placeholder="placeholder_input_email">
 			</div>
 			<DateTimePicker name="birthdate" v-model="birthDatetime"></DateTimePicker>
 			<div class="form-group row align-items-end">
-				<label for="placename" class="col-sm-4">Birth place:</label>
-				<input ref="autocomplete" type="text" name="placename" class="col-sm-8">
+				<label for="placename" class="col-sm-4">{{ label_birthplace }}:</label>
+				<input ref="autocomplete" type="text" name="placename" class="col-sm-8" :placeholder="placeholder_input_birthplace">
 			</div>
 			<div class="row justify-content-center">
-				<input type="submit" class="btn btn-success form-control" value="Get Personal Daily Horoscope">
+				<input type="submit" class="btn btn-success form-control" :value="button_submit_form">
 			</div>
 		</form>
 	</div>
@@ -33,6 +33,15 @@ export default {
 			email: "",
 			birthDatetime: "",
 			birthPlace: "",
+
+			form_title:  ASTROWEB_HOROSCOPE_CONFIG.translate('form_title'), 
+			label_first_name: ASTROWEB_HOROSCOPE_CONFIG.translate('label_first_name'),
+			placeholder_input_first_name: ASTROWEB_HOROSCOPE_CONFIG.translate('placeholder_input_first_name'),
+			label_email: ASTROWEB_HOROSCOPE_CONFIG.translate('label_email'),
+			placeholder_input_email: ASTROWEB_HOROSCOPE_CONFIG.translate('placeholder_input_email'),
+			label_birthplace: ASTROWEB_HOROSCOPE_CONFIG.translate('label_birthplace'),
+			placeholder_input_birthplace: ASTROWEB_HOROSCOPE_CONFIG.translate('placeholder_input_birthplace'),
+			button_submit_form: ASTROWEB_HOROSCOPE_CONFIG.translate('button_submit_form'),
 		};
 	},
 	components: {

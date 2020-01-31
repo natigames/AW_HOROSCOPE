@@ -7,22 +7,22 @@
 			</div>
 			<h3>{{ aspect }}</h3>
 		</div>
-		<div class="astroweb-report-scrollbox">
+		<div class="astroweb-report-scrollbox mb-4 p-2">
 			<div v-for="section in report">
 				{{ section }}
 			</div>
 		</div>
 		<div class="astroweb-report-footer">
-			<div>Calculated for {{ firstname }} <button @click="$parent.changePage('Form')">not you?</button></div>
-			<div class="row">
+			<div>{{ calc_for }} {{ firstname }} <button @click="$parent.changePage('Form')">{{ not_you }}</button></div>
+			<div v-if="footer" class="row mt-4">
 				<div class="col-6 astroweb-branding">
-					<div v-if="footer">
-						<h6>Powered by:</h6>
+					<div>
+						<h6>{{ powered_by }}:</h6>
 						<img src="https://astroweb.mx/wp-content/uploads/2019/12/Logo2.png">
 					</div>
 				</div>
-				<div class="col-6 align-self-center">
-					Visit <a href="https://astroweb.mx" target="_blank">astroweb.mx</a> for more reports.
+				<div class="col-6 align-self-center text-left">
+					<small>{{ visit_astroweb_1 }} <a href="https://astroweb.mx" target="_blank">astroweb.mx</a> {{ visit_astroweb_2 }}</small>
 				</div>
 			</div>
 		</div>
@@ -40,13 +40,21 @@
 				report: [],
 				firstname: "",
 				footer: false,
+				
+				calc_for: "",
+				not_you: ASTROWEB_HOROSCOPE_CONFIG.translate('not_you'),
+				powered_by: ASTROWEB_HOROSCOPE_CONFIG.translate('powered_by'),
+				visit_astroweb_1: ASTROWEB_HOROSCOPE_CONFIG.translate('visit_astroweb_1'),
+				visit_astroweb_2: ASTROWEB_HOROSCOPE_CONFIG.translate('visit_astroweb_2'),
 			};
 		},
 		mounted() {
 			axios.post("https://astroweb.mx/rest/aw/profiles/" + ASTROWEB_HOROSCOPE_CONFIG.token, this.$parent.user, this.$parent.$parent.config)
 				.then((response) => {
 					if(response.data.errordata) {
-						console.error(errordata);
+						console.log(response);
+						console.error(response.data.errordata);
+						return;
 					}
 					let profileid = response.data.data.profile.profileid;
 
@@ -59,6 +67,10 @@
 							this.report = response2.data.data.text;
 							this.firstname = response2.data.data.profile.firstname;
 							this.footer = response2.data.data.footer;
+
+							this.calc_for = response2.data.data.profile.gender == "M" 
+								? ASTROWEB_HOROSCOPE_CONFIG.translate('calc_for_masculine')
+								: ASTROWEB_HOROSCOPE_CONFIG.translate('calc_for_feminine');
 						})
 						.catch((error) => {
 							console.error(error);
@@ -76,7 +88,8 @@
 <style lang="scss" scoped>
 .astroweb-report-scrollbox {
 	height: 150px;
-	overflow-y: scroll;
+	overflow-y: auto;
+	border: 1px solid;
 }
 .astroweb-branding {
 	position: relative;
@@ -84,7 +97,7 @@
 		color: black;
 		position: absolute;
 		top: 4px;
-		right: 45px;
+		right: 25px;
 	}
 }
 .astroweb-report-footer button {
