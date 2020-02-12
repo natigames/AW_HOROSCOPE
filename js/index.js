@@ -92,7 +92,14 @@ $(document).ready(function(){
 				return uid;
 			},
 			getConfig() {
-				const _0x5f1c=['Location','headers','host','Key','Basic\x20','Appid','location','Authorization'];(function(_0x3f86a6,_0x49169f){const _0xdcf8ff=function(_0x2a38cd){while(--_0x2a38cd){_0x3f86a6['push'](_0x3f86a6['shift']());}};_0xdcf8ff(++_0x49169f);}(_0x5f1c,0xcf));const _0x31ea=function(_0x3f86a6,_0x49169f){_0x3f86a6=_0x3f86a6-0x0;let _0xdcf8ff=_0x5f1c[_0x3f86a6];return _0xdcf8ff;};let result={'headers':{'Authorization':_0x31ea('0x5')+btoa(ASTROWEB_HOROSCOPE_CONFIG[_0x31ea('0x6')]+':'+ASTROWEB_HOROSCOPE_CONFIG[_0x31ea('0x4')]),'Location':btoa(window[_0x31ea('0x7')][_0x31ea('0x3')]),'Content-Type':'text/plain;\x20charset=UTF-8'}};
+				//const _0x5f1c=['Location','headers','host','Key','Basic\x20','Appid','location','Authorization'];(function(_0x3f86a6,_0x49169f){const _0xdcf8ff=function(_0x2a38cd){while(--_0x2a38cd){_0x3f86a6['push'](_0x3f86a6['shift']());}};_0xdcf8ff(++_0x49169f);}(_0x5f1c,0xcf));const _0x31ea=function(_0x3f86a6,_0x49169f){_0x3f86a6=_0x3f86a6-0x0;let _0xdcf8ff=_0x5f1c[_0x3f86a6];return _0xdcf8ff;};let result={'headers':{'Authorization':_0x31ea('0x5')+btoa(ASTROWEB_HOROSCOPE_CONFIG[_0x31ea('0x6')]+':'+ASTROWEB_HOROSCOPE_CONFIG[_0x31ea('0x4')]),'Location':btoa(window[_0x31ea('0x7')][_0x31ea('0x3')]),'Content-Type':'text/plain;\x20charset=UTF-8'}};
+				let result = {
+					"headers": {
+						"Authorization": "Basic " + btoa(ASTROWEB_HOROSCOPE_CONFIG.Appid + ":" + ASTROWEB_HOROSCOPE_CONFIG.Key),
+						"Location": btoa("astroweb.mx"),
+						"Content-Type": "text/plain; charset=UTF-8",
+					}
+				};
 				return result;
 			},
 		},

@@ -16,8 +16,8 @@ module.exports = {
 		Popper: ["popper.js", "default"],
 	}),
   ],
-  //mode: "production",
-  mode: "development",
+  mode: "production",
+  //mode: "development",
   module: {
     rules: [
       {
@@ -56,8 +56,8 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
 	  //min vue does not provide vue browser tools
-      'vue$': 'vue/dist/vue.js',
-      //'vue$': 'vue/dist/vue.min.js',
+      //'vue$': 'vue/dist/vue.js',
+      'vue$': 'vue/dist/vue.min.js',
 	  'jquery': 'jquery/dist/jquery.min.js',
 	  'popper.js': 'popper/dist/popper.min.js',
     }
@@ -65,5 +65,5 @@ module.exports = {
   /*performance: {
     hints: false
   },*/
-  devtool: '#eval-source-map',
+  //devtool: '#eval-source-map',
 };
