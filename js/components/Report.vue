@@ -21,7 +21,7 @@
 						<img src="https://astroweb.mx/wp-content/uploads/2019/12/Logo2.png">
 					</div>
 				</div>
-				<div class="col-6 align-self-center text-left">
+				<div class="col-6 align-self-center text-left astroweb-link">
 					<small>{{ visit_astroweb_1 }} <a href="https://astroweb.mx" target="_blank">astroweb.mx</a> {{ visit_astroweb_2 }}</small>
 				</div>
 			</div>

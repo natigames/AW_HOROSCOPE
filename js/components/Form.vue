@@ -2,20 +2,20 @@
 	<div>
 		<h2 class="form-header">{{ form_title }}</h2>
 		<form class="text-left" @submit.prevent="getReport">
-			<div class="form-group row align-items-end">
+			<div class="form-group row align-items-end name-group">
 				<label for="firstname" class="col-sm-4">{{ label_first_name }}:</label>
 				<input type="text" name="firstname" class="col-sm-8" v-model="firstname" :placeholder="placeholder_input_first_name">
 			</div>
-			<div class="form-group row align-items-end">
+			<div class="form-group row align-items-end email-group">
 				<label for="email" class="col-sm-4">{{ label_email }}:</label>
 				<input type="email" name="email" class="col-sm-8" v-model="email" :placeholder="placeholder_input_email">
 			</div>
 			<DateTimePicker name="birthdate" v-model="birthDatetime"></DateTimePicker>
-			<div class="form-group row align-items-end">
+			<div class="form-group row align-items-end birthplace-group">
 				<label for="placename" class="col-sm-4">{{ label_birthplace }}:</label>
 				<input ref="autocomplete" type="text" name="placename" class="col-sm-8" :placeholder="placeholder_input_birthplace">
 			</div>
-			<div class="row justify-content-center">
+			<div class="row justify-content-center submit-button-container">
 				<input type="submit" class="btn btn-success form-control" :value="button_submit_form">
 			</div>
 		</form>
