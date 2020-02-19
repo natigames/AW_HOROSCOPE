@@ -8,9 +8,14 @@
 			<h3>{{ aspect }}</h3>
 		</div>
 		<div class="astroweb-report-scrollbox mb-4 p-2">
-			<div v-for="section in report">
-				{{ section }}
+			<div v-if="loading" class="h-100 d-flex justify-content-center align-items-center">
+				<div class="spinner-border"></div>
 			</div>
+			<template v-else>
+				<div v-for="section in report">
+					{{ section }}
+				</div>
+			</template>
 		</div>
 		<div class="astroweb-report-footer">
 			<div>{{ calc_for }} {{ firstname }} <button @click="$parent.changePage('Form')">{{ not_you }}</button></div>
@@ -34,6 +39,7 @@
 	export default {
 		data: function() {
 			return {
+				loading: true,
 				dateend: "",
 				rpt_type: "",
 				aspect: "",
@@ -60,7 +66,7 @@
 
 					axios.get("https://astroweb.mx/rest/aw/horoscope/" + ASTROWEB_HOROSCOPE_CONFIG.token + "/" + profileid, this.$parent.$parent.config)
 						.then((response2) => {
-							console.log(response2.data);
+							//console.log(response2.data);
 							this.dateend = response2.data.data.dateend;
 							this.rpt_type = response2.data.data.type;
 							this.aspect = response2.data.data.aspect;
@@ -71,6 +77,7 @@
 							this.calc_for = response2.data.data.profile.gender == "M" 
 								? ASTROWEB_HOROSCOPE_CONFIG.translate('calc_for_masculine')
 								: ASTROWEB_HOROSCOPE_CONFIG.translate('calc_for_feminine');
+							this.loading = false;
 						})
 						.catch((error) => {
 							console.error(error);
