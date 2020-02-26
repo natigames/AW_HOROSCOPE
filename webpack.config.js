@@ -62,8 +62,8 @@ module.exports = {
 	  'popper.js': 'popper/dist/popper.min.js',
     }
   },
-  /*performance: {
+  performance: {
     hints: false
-  },*/
+  },
   //devtool: '#eval-source-map',
 };
