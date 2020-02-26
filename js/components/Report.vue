@@ -3,7 +3,14 @@
 		<div class="astroweb-report-header">
 			<div class="row">
 				<div class="astroweb-report-date col-8 text-left">{{ dateend }}</div>
-				<div class="astroweb-report-type col-4 text-right">{{ rpt_type }}</div>
+				<div class="astroweb-report-type col-4 text-right">
+					<select v-model="rpt_type">
+						<option value="love" v-if="!footer">{{ love_option }}</option>
+						<option value="karma" v-if="!footer">{{ karma_option }}</option>
+						<option value="money" v-if="!footer">{{ money_option }}</option>
+						<option value="general">{{ general_option }}</option>
+					</select>
+				</div>
 			</div>
 			<h3>{{ aspect }}</h3>
 		</div>
@@ -40,12 +47,16 @@
 		data: function() {
 			return {
 				loading: true,
-				dateend: "",
 				rpt_type: "",
-				aspect: "",
-				report: [],
+
+				love_option: ASTROWEB_HOROSCOPE_CONFIG.translate('love_option'),
+				karma_option: ASTROWEB_HOROSCOPE_CONFIG.translate('karma_option'),
+				money_option: ASTROWEB_HOROSCOPE_CONFIG.translate('money_option'),
+				general_option: ASTROWEB_HOROSCOPE_CONFIG.translate('general_option'),
+
 				firstname: "",
 				footer: false,
+				allData: null,
 				
 				calc_for: "",
 				not_you: ASTROWEB_HOROSCOPE_CONFIG.translate('not_you'),
@@ -55,6 +66,10 @@
 			};
 		},
 		mounted() {
+			// Get report type from cookie if available
+			this.rpt_type = this.$parent.user.rpt_type ? this.$parent.user.rpt_type : "general";
+
+			// Get report
 			axios.post("https://astroweb.mx/rest/aw/profiles/" + ASTROWEB_HOROSCOPE_CONFIG.token, this.$parent.user, this.$parent.$parent.config)
 				.then((response) => {
 					if(response.data.errordata) {
@@ -67,10 +82,8 @@
 					axios.get("https://astroweb.mx/rest/aw/horoscope/" + ASTROWEB_HOROSCOPE_CONFIG.token + "/" + profileid, this.$parent.$parent.config)
 						.then((response2) => {
 							//console.log(response2.data);
-							this.dateend = response2.data.data.dateend;
-							this.rpt_type = response2.data.data.type;
-							this.aspect = response2.data.data.aspect;
-							this.report = response2.data.data.text;
+							this.allData = response2.data.data;
+
 							this.firstname = response2.data.data.profile.firstname;
 							this.footer = response2.data.data.footer;
 
@@ -88,6 +101,39 @@
 					//console.error(error.response.data);
 				});
 
+		},
+		computed: {
+			aspect: function() {
+				if(this.allData) {
+					return this.allData[this.rpt_type]["aspect"];
+				}
+				return "";
+			},
+			report: function() {
+				if(this.allData) {
+					return this.allData[this.rpt_type]["text"];
+				}
+				return [];
+			},
+			dateend: function() {
+				if(this.allData) {
+					return this.allData[this.rpt_type]["dateend"];
+				}
+				return "";
+			},
+		},
+		watch: {
+			rpt_type: function(newType, oldType) {
+				//set new value on user cookie
+				this.$parent.user.rpt_type = newType;
+
+				let d = new Date();
+				d.setTime(d.getTime() + (180 * 24 * 60 * 60 * 1000));
+				let expires = "expires=" + d.toUTCString();
+
+				let cookieStr = "astroweb-horoscope-user=" + JSON.stringify(this.$parent.user) + ";" + expires + ";";
+				document.cookie = cookieStr;
+			},
 		},
 	}
 </script>
