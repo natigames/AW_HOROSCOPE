@@ -5,10 +5,10 @@
 				<div class="astroweb-report-date col-8 text-left">{{ dateend }}</div>
 				<div class="astroweb-report-type col-4 text-right">
 					<select v-model="rpt_type">
-						<option value="love" v-if="!footer">{{ love_option }}</option>
-						<option value="karma" v-if="!footer">{{ karma_option }}</option>
-						<option value="money" v-if="!footer">{{ money_option }}</option>
 						<option value="general">{{ general_option }}</option>
+						<option value="love" v-if="!footer">{{ love_option }}</option>
+						<option value="money" v-if="!footer">{{ money_option }}</option>
+						<option value="karma" v-if="!footer">{{ karma_option }}</option>
 					</select>
 				</div>
 			</div>
